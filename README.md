@@ -21,7 +21,7 @@ Add the module import to the consuming site's Hugo config and pin it in `go.mod`
 }
 ```
 
-```
+```text
 require github.com/tsvsheet/theme.tsvsheet v0.1.0
 ```
 
