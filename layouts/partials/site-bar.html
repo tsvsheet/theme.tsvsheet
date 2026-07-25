@@ -2,7 +2,7 @@
 {{- $main := .Site.Params.mainSite | default "" -}}
 <header class="bar">
     <a class="brand" href="{{ $main }}/">
-      <img src="/favicon.svg" alt="tsvsheet logo" width="28" height="28">
+      <img src="{{ "favicon.svg" | relURL }}" alt="tsvsheet logo" width="28" height="28">
       <span>tsvsheet<sup class="tm">™</sup></span>
     </a>
     <input class="menu-switch" type="checkbox" id="site-menu" aria-label="Site menu">
