@@ -1,0 +1,7 @@
+{{- /* Every fenced code block renders as a captioned listing with a copy
+     button (wired in baseof); the language tag comes from the fence. */ -}}
+{{- $result := transform.HighlightCodeBlock . (dict "noClasses" false) -}}
+<figure class="listing">
+<figcaption class="listing-cap"><span class="listing-lang">{{ or .Type "text" }}</span><button class="copy" type="button" aria-label="copy code to clipboard">copy</button></figcaption>
+{{ $result.Wrapped }}
+</figure>

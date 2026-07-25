@@ -1,0 +1,32 @@
+{{ define "head" }}
+{{- /* A site-local stylesheet is an opt-in: a consumer adds assets/css/local.css
+     and the theme loads it — no layout override needed. */ -}}
+{{ with resources.Get "css/local.css" }}
+{{ $css := . | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+{{ end }}
+{{ end }}
+{{ define "main" }}
+<div class="sheet">
+  {{ partial "site-bar.html" . }}
+
+  <main>
+    {{ partial "sheet-page.html" . }}
+    {{ with .Pages }}
+    <section class="row">
+      <span class="addr" aria-hidden="true">A{{ add (len (split $.Content "<h2")) 1 }}</span>
+      <div class="cellbody">
+        <h2>Pages</h2>
+        <ul class="pageindex">
+          {{ range . }}
+          <li><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ with or .Description .Summary }} — {{ . | plainify | truncate 96 }}{{ end }}</li>
+          {{ end }}
+        </ul>
+      </div>
+    </section>
+    {{ end }}
+  </main>
+
+  {{ partial "site-foot.html" . }}
+</div>
+{{ end }}

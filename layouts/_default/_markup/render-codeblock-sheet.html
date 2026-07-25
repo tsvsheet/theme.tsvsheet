@@ -1,0 +1,13 @@
+{{- /*
+  ```sheet fenced blocks become a live-computing <tsv-sheet> custom element.
+  The element is registered by a site's params.enhanceScript bundle (see
+  baseof); until it upgrades — or on sites that ship no bundle — the
+  highlighted source stands in as the fallback, so the hook degrades to a
+  plain listing. Hugo's html/template contextually escapes .Inner in the
+  attribute; TABs and newlines pass through verbatim.
+*/ -}}
+{{- $hl := transform.HighlightCodeBlock . (dict "noClasses" false) -}}
+<figure class="listing sheet-listing">
+<figcaption class="listing-cap"><span class="listing-lang">sheet</span></figcaption>
+<tsv-sheet source="{{ .Inner }}">{{ $hl.Wrapped }}</tsv-sheet>
+</figure>

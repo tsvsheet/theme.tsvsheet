@@ -1,0 +1,15 @@
+{{ define "head" }}
+{{ with resources.Get "css/local.css" }}
+{{ $css := . | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+{{ end }}
+{{ end }}
+{{ define "main" }}
+<div class="sheet">
+  {{ partial "site-bar.html" . }}
+  <main>
+    {{ partial "sheet-page.html" . }}
+  </main>
+  {{ partial "site-foot.html" . }}
+</div>
+{{ end }}

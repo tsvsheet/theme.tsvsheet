@@ -1,0 +1,21 @@
+{{- /* sheet-page: the addressed-cell page body shared by index and single —
+     each h2 opens a new addressed row, matching tsvsheet.com's
+     one-section-per-address grid. */ -}}
+{{ $chunks := split .Content "<h2" }}
+<section class="row">
+  <span class="addr" aria-hidden="true">A1</span>
+  <div class="cellbody">
+    <h1>{{ .Title }}</h1>
+    {{ $lede := .Params.description | default (cond .IsHome .Site.Params.description "") }}
+    {{ with $lede }}<p class="lede">{{ . }}</p>{{ end }}
+    {{ index $chunks 0 | safeHTML }}
+  </div>
+</section>
+{{ range $i, $chunk := after 1 $chunks }}
+<section class="row">
+  <span class="addr" aria-hidden="true">A{{ add $i 2 }}</span>
+  <div class="cellbody">
+    {{ printf "<h2%s" $chunk | safeHTML }}
+  </div>
+</section>
+{{ end }}

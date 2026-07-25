@@ -1,0 +1,23 @@
+{{ define "main" }}
+<div class="sheet">
+  {{ partial "site-bar.html" . }}
+
+  <main>
+    <section class="row">
+      <span class="addr" aria-hidden="true">A1</span>
+      <div class="cellbody">
+        <h1>Not found<span class="notfound-path"> — <code data-notfound-path>this page</code></span></h1>
+        <p class="lede">That page isn’t in this sheet. Head back to the <a href="{{ site.Home.RelPermalink }}">index</a>.</p>
+      </div>
+    </section>
+  </main>
+
+  {{ partial "site-foot.html" . }}
+</div>
+<script>
+  (function () {
+    var slot = document.querySelector("[data-notfound-path]");
+    if (slot) slot.textContent = location.pathname;
+  })();
+</script>
+{{ end }}

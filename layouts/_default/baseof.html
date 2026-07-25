@@ -81,6 +81,26 @@
     });
     term.appendChild(btn);
   });
+
+  // Copy button on every code listing (the render-codeblock hook emits it).
+  document.querySelectorAll(".listing").forEach((listing) => {
+    const copy = listing.querySelector(".copy");
+    const code = listing.querySelector("pre");
+    if (!copy || !code || !navigator.clipboard) return;
+    copy.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(code.textContent);
+        copy.textContent = "copied";
+      } catch {
+        copy.textContent = "copy failed";
+      }
+      setTimeout(() => { copy.textContent = "copy"; }, 1600);
+    });
+  });
 </script>
+{{- /* Opt-in progressive enhancement: a site sets params.enhanceScript to a
+     self-contained module (e.g. the tsv-sheet element bundle) that upgrades
+     its code examples in place. Inert when the param is unset. */ -}}
+{{ with site.Params.enhanceScript }}<script type="module" src="{{ . | relURL }}"></script>{{ end }}
 </body>
 </html>

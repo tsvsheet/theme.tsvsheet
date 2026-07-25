@@ -1,0 +1,20 @@
+{{ define "main" }}
+<div class="sheet">
+  {{ partial "site-bar.html" . }}
+  <main>
+    <section class="row">
+      <span class="addr" aria-hidden="true">A1</span>
+      <div class="cellbody">
+        <h1>{{ .Title }}</h1>
+        {{ .Content }}
+        <ul class="pageindex">
+          {{ range .Pages }}
+          <li><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ with or .Description .Summary }} — {{ . | plainify | truncate 96 }}{{ end }}</li>
+          {{ end }}
+        </ul>
+      </div>
+    </section>
+  </main>
+  {{ partial "site-foot.html" . }}
+</div>
+{{ end }}
