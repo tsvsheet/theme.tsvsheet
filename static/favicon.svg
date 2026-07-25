@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- tsvsheet master logo: a spreadsheet tile — header row/column rules offset
+       to the top-left, header corner tinted, a bold = (formula marker) in the
+       data cell. Pure shapes, no fonts, so it renders identically everywhere. -->
+  <defs>
+    <clipPath id="tile"><rect x="0" y="0" width="1024" height="1024" rx="200"/></clipPath>
+  </defs>
+  <g clip-path="url(#tile)">
+    <rect width="1024" height="1024" fill="#0E6B54"/>
+    <rect x="0" y="0" width="366" height="366" fill="#FFFFFF" opacity="0.14"/>
+    <rect x="366" y="0" width="36" height="1024" fill="#E6F2EC"/>
+    <rect x="0" y="366" width="1024" height="36" fill="#E6F2EC"/>
+    <rect x="537" y="607" width="352" height="80" rx="40" fill="#FFFFFF"/>
+    <rect x="537" y="739" width="352" height="80" rx="40" fill="#FFFFFF"/>
+  </g>
+</svg>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Locale | default "en" }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ .Title | default .Site.Title }}</title>
+<meta name="description" content="{{ .Params.description | default .Site.Params.description }}">
+<link rel="canonical" href="{{ .Permalink }}">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f4f8f6">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f1512">
+<meta property="og:site_name" content="{{ .Site.Title }}">
+<meta property="og:title" content="{{ .Title | default .Site.Title }}">
+<meta property="og:description" content="{{ .Params.description | default .Site.Params.description }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:type" content="website">
+<meta property="og:image" content="{{ "og.png" | absURL }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="tsvsheet — a spreadsheet for plain text">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ .Title | default .Site.Title }}">
+<meta name="twitter:description" content="{{ .Params.description | default .Site.Params.description }}">
+<meta name="twitter:image" content="{{ "og.png" | absURL }}">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/fonts/ibm-plex-sans-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/ibm-plex-mono-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/ibm-plex-mono-latin-600.woff2" as="font" type="font/woff2" crossorigin>
+{{ $css := slice (resources.Get "css/fonts.css") (resources.Get "css/main.css") | resources.Concat "css/site.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+{{ if .IsHome }}<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","name":"tsvsheet","url":"{{ .Site.BaseURL }}","description":{{ .Site.Params.description | jsonify }}},{"@type":"SoftwareApplication","name":"tsvsheet","applicationCategory":"DeveloperApplication","operatingSystem":"macOS, Linux, Windows, Web","url":"{{ .Site.BaseURL }}","description":{{ .Site.Params.description | jsonify }},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"softwareHelp":"https://github.com/tsvsheet"}]}</script>{{ end }}
+<script>(() => { const t = localStorage.getItem("tsvsheet-theme"); if (t === "dark" || t === "light") document.documentElement.dataset.theme = t; })();</script>
+</head>
+<body>
+{{ block "main" . }}{{ end }}
+<script>
+  document.querySelectorAll("[data-theme-toggle]").forEach((btn) => btn.addEventListener("click", () => {
+    const root = document.documentElement;
+    const dark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    const next = dark ? "light" : "dark";
+    root.dataset.theme = next;
+    localStorage.setItem("tsvsheet-theme", next);
+  }));
+
+  // Copy-to-clipboard on every shell-command block: prompt-marked lines are
+  // commands; indented lines directly following one are continuations (a
+  // trailing \ or an open { group); everything else is output and never copied.
+  document.querySelectorAll(".term").forEach((term) => {
+    const pre = term.querySelector("pre");
+    if (!pre || !pre.querySelector(".prompt")) return;
+    const copied = [];
+    let inCommand = false;
+    for (const line of pre.textContent.split("\n")) {
+      if (line.startsWith("$ ") || line.startsWith("> ")) {
+        copied.push(line.slice(2).trimEnd());
+        inCommand = true;
+      } else if (inCommand && /^\s+\S/.test(line)) {
+        copied.push(line.trimEnd());
+      } else {
+        inCommand = false;
+      }
+    }
+    const commands = copied.join("\n");
+    if (!commands) return;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "copybtn";
+    btn.textContent = "copy";
+    btn.setAttribute("aria-label", "Copy commands");
+    btn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(commands);
+        btn.textContent = "copied ✓";
+        btn.classList.add("done");
+      } catch {
+        btn.textContent = "copy failed";
+      }
+      setTimeout(() => { btn.textContent = "copy"; btn.classList.remove("done"); }, 1400);
+    });
+    term.appendChild(btn);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{{- /* Nav base: empty on tsvsheet.com itself (self-relative), "https://tsvsheet.com" on a consuming docs site so its footer returns to the main site. */ -}}
+{{- $main := .Site.Params.mainSite | default "" -}}
+<footer class="bar foot">
+    <span>tsvsheet™ — specified grammar-first · © 2026 tsvsheet</span>
+    <nav class="bar-links">
+      <a href="{{ $main }}/playground/">Playground</a>
+      <a href="{{ $main }}/functions/">Functions</a>
+      <a href="{{ $main }}/recipes/">Recipes</a>
+      <a href="{{ $main }}/install/">Install</a>
+      <a href="{{ $main }}/tools/">Tools</a>
+      <a href="https://github.com/tsvsheet">github.com/tsvsheet</a>
+    </nav>
+  </footer>

@@ -1,0 +1,24 @@
+{{- /* Nav base: empty on tsvsheet.com itself (self-relative), "https://tsvsheet.com" on a consuming docs site so its header returns to the main site. */ -}}
+{{- $main := .Site.Params.mainSite | default "" -}}
+<header class="bar">
+    <a class="brand" href="{{ $main }}/">
+      <img src="/favicon.svg" alt="tsvsheet logo" width="28" height="28">
+      <span>tsvsheet<sup class="tm">™</sup></span>
+    </a>
+    <input class="menu-switch" type="checkbox" id="site-menu" aria-label="Site menu">
+    <div class="bar-end">
+      <nav class="bar-links site-nav">
+        <a href="{{ $main }}/playground/">Playground</a>
+        <a href="{{ $main }}/functions/">Functions</a>
+        <a href="{{ $main }}/recipes/">Recipes</a>
+        <a href="{{ $main }}/install/">Install</a>
+        <a href="{{ $main }}/tools/">Tools</a>
+        <a href="https://github.com/tsvsheet/tsvsheet/blob/main/SPECIFICATION.md">Specification</a>
+        <a href="https://github.com/tsvsheet">GitHub</a>
+      </nav>
+      <span class="bar-tools">
+        <button class="theme-cycle" type="button" data-theme-toggle aria-label="Toggle color theme">◐ theme</button>
+        <label class="menu-btn" for="site-menu" aria-hidden="true"></label>
+      </span>
+    </div>
+  </header>
